@@ -347,7 +347,7 @@
             // Map distance feature -> coordinate pair
             const coordBase = feature
                 .replace(/_road_m$/, '')
-                .replace(/_crow_$/, '_crow'); // harmless if not needed
+                .replace(/_crow_m$/, ''); // harmless if not needed
 
             const latFeature = `${coordBase}_lat`;
             const lonFeature = `${coordBase}_lon`;
