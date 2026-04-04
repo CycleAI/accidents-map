@@ -343,14 +343,15 @@
             const feature = document.getElementById('feature-select').value;
             if (!feature || globalData.length === 0) return;
 
-            // Logic to find the longitude pair for the selected feature
-            // Map distance feature -> coordinate pair
-            const coordBase = feature
-                .replace(/_road_m$/, '')
-                .replace(/_crow_m$/, ''); // harmless if not needed
+            let latFeature, lonFeature;
 
-            const latFeature = `${coordBase}_lat`;
-            const lonFeature = `${coordBase}_lon`;
+            if (feature.endsWith('_road_m')) {
+                latFeature = feature.replace('_road_m', '_lat');
+                lonFeature = feature.replace('_road_m', '_lon');
+            } else if (feature.endsWith('_crow_m')) {
+                latFeature = feature.replace('_crow_m', '_crow_lat');
+                lonFeature = feature.replace('_crow_m', '_crow_lon');
+            }
             const hasInterestPoints =
                 globalData[0].hasOwnProperty(latFeature) &&
                 globalData[0].hasOwnProperty(lonFeature);
