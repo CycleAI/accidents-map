@@ -241,6 +241,10 @@
             });
 
         let globalData = [];
+        function getYearValue(d) {
+            const y = d.year ?? d.collision_year;
+            return Number.isFinite(+y) ? +y : null;
+        }
         let markerLayer = L.layerGroup().addTo(map);
         let interestLayer = L.layerGroup().addTo(map);
         document.getElementById('year-slider-min').addEventListener('input', function () {
@@ -296,7 +300,10 @@
                     populateFeatures(results.meta.fields);
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('feature-container').style.display = 'block';
-                    const years = globalData.map(d => d.collision_year).filter(d => d);
+                    const years = globalData
+                        .map(getYearValue)
+                        .filter(v => v !== null);
+                    
                     const minYear = Math.min(...years);
                     const maxYear = Math.max(...years);
 
@@ -373,7 +380,9 @@
 
             globalData.forEach(d => {
                 if (!d.latitude || !d.longitude) return;
-                if (d.collision_year < minYear || d.collision_year > maxYear) return;
+                const rowYear = getYearValue(d);
+                if (rowYear === null) return;
+                if (rowYear < minYear || rowYear > maxYear) return;
                 if (selectedSeverities.length && !selectedSeverities.includes(String(d.Severity))) return;
                 let color = isNumeric ? colorScale(d[feature]) : ordinalScale(d[feature]);
                 const size = +document.getElementById('size-slider').value;
