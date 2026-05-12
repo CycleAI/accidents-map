@@ -444,7 +444,7 @@ legend.innerHTML = `<b>${feature}</b><br/>`;
 
 if (isNumeric) {
     // Keep years as whole numbers in the legend
-    if (feature === 'collision_year') {
+    if (feature === 'collision_year' || feature === 'year') {
         const start = Math.floor(min);
         const end = Math.floor(max);
 
