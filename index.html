@@ -440,35 +440,48 @@
                 markerLayer.addLayer(marker);
             });
             const legend = document.getElementById('legend');
-            legend.innerHTML = `<b>${feature}</b><br/>`;
+legend.innerHTML = `<b>${feature}</b><br/>`;
 
-            if (isNumeric) {
-                // continuous scale → show gradient steps
-                const steps = 5;
-                for (let i = 0; i <= steps; i++) {
-                    const value = min + (i / steps) * (max - min);
-                    const color = colorScale(value);
+if (isNumeric) {
+    // Keep years as whole numbers in the legend
+    if (feature === 'collision_year') {
+        const start = Math.floor(min);
+        const end = Math.floor(max);
 
-                    legend.innerHTML += `
-            <div class="legend-item">
-                <div class="legend-color" style="background:${color}"></div>
-                ${value.toFixed(2)}
-            </div>
-        `;
-                }
-            } else {
-                // categorical
-                uniqueVals.slice(0, 10).forEach(val => {
-                    legend.innerHTML += `
+        for (let year = start; year <= end; year++) {
+            legend.innerHTML += `
+                <div class="legend-item">
+                    <div class="legend-color" style="background:${colorScale(year)}"></div>
+                    ${year}
+                </div>
+            `;
+        }
+    } else {
+        // continuous scale → show gradient steps
+        const steps = 5;
+        for (let i = 0; i <= steps; i++) {
+            const value = min + (i / steps) * (max - min);
+            const color = colorScale(value);
+
+            legend.innerHTML += `
+                <div class="legend-item">
+                    <div class="legend-color" style="background:${color}"></div>
+                    ${value.toFixed(2)}
+                </div>
+            `;
+        }
+    }
+} else {
+    // categorical
+    uniqueVals.slice(0, 10).forEach(val => {
+        legend.innerHTML += `
             <div class="legend-item">
                 <div class="legend-color" style="background:${ordinalScale(val)}"></div>
                 ${val}
             </div>
         `;
-                });
-            }
-
-        }
+    });
+}
 
         function buildStaticMapUrl() {
             const feature = document.getElementById('feature-select').value;
