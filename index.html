@@ -353,8 +353,8 @@
             let latFeature, lonFeature;
 
             if (feature.endsWith('_road_m')) {
-                latFeature = feature.replace('_road_m', '_lat');
-                lonFeature = feature.replace('_road_m', '_lon');
+                latFeature = feature.replace('_m', '_lat');
+                lonFeature = feature.replace('_m', '_lon');
             } else if (feature.endsWith('_crow_m')) {
                 latFeature = feature.replace('_crow_m', '_crow_lat');
                 lonFeature = feature.replace('_crow_m', '_crow_lon');
